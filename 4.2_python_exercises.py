@@ -125,11 +125,11 @@ True or "42"
 
 daily_rental_rate = 3
 # Movies
-little_mermaid = 3
-brother_bear = 5
-hercules = 1
+little_mermaid_days = 3
+brother_bear_days = 5
+hercules_days = 1
 
-total_rental_cost = (little_mermaid + brother_bear + hercules) * daily_rental_rate
+total_rental_cost = (little_mermaid_days + brother_bear_days + hercules_days) * daily_rental_rate
 
 print(total_rental_cost)
 
