@@ -142,6 +142,13 @@ def normalize_name(arg):
     return remove_special_characters(arg).lower().strip().replace(' ', '_')
 normalize_name(" % Completed")
 
+# Or
+def remove_special_chars(s):
+    return ''.join([c for c in s if c.isidentifier() or c == ' '])
+
+def normalize_name(s):
+    return remove_special_chars(s).lower().strip().replace(' ', '_')
+
 #1 11) Write a function named cumsum that accepts a list of numbers and returns a list that is the cumulative sum of the numbers in the list.
 cumsum([1, 1, 1]) returns [1, 2, 3]
 cumsum([1, 2, 3, 4]) returns [1, 3, 6, 10]
@@ -155,3 +162,12 @@ def cumsum(arg):
     return new_list
     
 cumsum([1,2,3,4])
+
+# Or
+
+def cumsum(xs):
+    sums = [xs[0]]
+    for x in xs[1:]:
+        sums.append(sums[-1] + x)
+    return sums
+print(cumsum([1,1,1,1]))
