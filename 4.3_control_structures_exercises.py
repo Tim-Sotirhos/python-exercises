@@ -18,6 +18,15 @@ elif is_it_a_weekend == "Sunday" or is_it_a_weekend == "sunday":
     print("It's a weekend!")
 else:
     print("Maybe soon it will be a weekend")
+
+# Or
+
+is_weekend = input("Enter a day of the week: ")
+
+if is_weekend.lower() == "saturday" or is_weekend.lower() == "sunday":
+    print(f'Correct today is a weekend')
+else:
+    print(f'Sorry too bad')
     
 # c. create variables and make up values for
 # the number of hours worked in one week
@@ -37,6 +46,18 @@ def weekly_pay(hours, rate):
         return (hours - 40) * .5 * rate + (hours * rate)
         
 print(weekly_pay(41,15))
+
+# Or
+
+hours = 41
+rate = 20
+
+if hours < 41:
+    paycheck = hours * rate
+    print(paycheck)
+else:
+    paycheck = (hours - 40) * 1.5 * rate + 40 * rate
+    print(paycheck)
 
 # Loop Basics
 
@@ -105,16 +126,20 @@ for number in range(1,10):
 # except for the number the user entered.
 
 while True:
-    odd_number = input("Enter an odd number between 1 and 50: ")
-    if odd_number.isdigit() and int(odd_number) % 2 == 1 and int(odd_number) > 1 and int(odd_number) < 50:
-        break
-    print('Error')
+    numb = input("Enter an odd number between 1 and 50: ")
+    print("\n")
+    
+    if numb.isdigit() and int(numb) % 2 == 1 and int(numb) < 50:
+       break
 
-for i in range(1,51,2):
-    if i == int(odd_number):
-        print("Yikes! Skipping number: "+str(i))
+print("Number to skip is: " + str(numb))
+print("\n")
+
+for num in range(1, 50, 2):
+    if num == int(numb):
+        print("Nope! Skipping number: " + str(numb))
         continue
-    print("Here is an odd number: "+str(i)) 
+    print("Here is an odd number: " + str(num))
 
 # D. Prompt the user to enter a positive number and write a loop that counts from 0 to that number. 
 # (Hints: first make sure that the value the user entered is a valid number, also note that the input function returns a string, 
@@ -129,6 +154,16 @@ else:
     for i in range(0, number + 1):
         print(i)
 
+# Or
+
+while True:
+    pos_num = input("Enter a positive number: ")
+    if pos_num.isdigit() and int(pos_num) > 0:
+        break
+
+for num in range(0, int(pos_num) + 1):
+    print(num)
+
 # E. Write a program that prompts the user for a positive integer. 
 # Next write a loop that prints out the numbers from the number the user entered down to 1.
 
@@ -140,6 +175,16 @@ else:
     number = int(number)
     for i in range(number,0,-1):
         print(i)
+
+# Or
+
+while True:
+    pos_num = input("Enter a positive number: ")
+    if pos_num.isdigit() and int(pos_num) > 0:
+        break
+
+for num in range(int(pos_num), 0, -1):
+    print(num)
 
 # Fizzbuzz
 
@@ -159,13 +204,30 @@ for number in range(1, 101):
         print(number)
 
 
-# Display a table of powers.
+# 4) Display a table of powers.
 
 # Prompt the user to enter an integer.
 # Display a table of squares and cubes from 1 to the value entered.
 # Ask if the user wants to continue.
 # Assume that the user will enter valid data.
 # Only continue if the user agrees to.
+
+make_a_powers_table = True
+
+while make_a_powers_table:
+    powers = input("Enter an integer: ")
+    print("\n")
+    print(f'Here is your table!')
+    print("\n")
+    print("number | squared | cubed")
+    print("-" * 6 + " | " + "-" * 7 + " | " + "-" * 5)
+    for num in range(1, int(powers) + 1):
+        print(str(num) + " " * 6 + "| ", end="")
+        print(str(num**2) + " " * 6 + " |", end="")
+        print(" "+str(num**3))
+    make_a_powers_table = input("Would you like to continue? (Y/N)") == "Y"
+
+# Or
 
 make_a_table = True
 
@@ -184,3 +246,55 @@ while make_a_table:
         print(square + " " * (8-len(square)) + "| ", end="")
         print(cube)
     make_a_table = input("Would you like to continue? (Y/N)") == "Y"
+
+# 5) Convert given number grades into letter grades.
+
+# Prompt the user for a numerical grade from 0 to 100.
+# Display the corresponding letter grade.
+# Prompt the user to continue.
+# Assume that the user will enter valid integers for the grades.
+# The application should only continue if the user agrees to.
+# Grade Ranges:
+
+# A : 100 - 88
+# B : 87 - 80
+# C : 79 - 67
+# D : 66 - 60
+# F : 59 - 0
+
+grades = True
+
+while grades:
+    grade = input("Enter a numerical grade from 0 to 100: ")
+    grade = int(grade)
+
+    if grade >= 88:
+        print("A")
+    elif grade >= 80:
+        print("B")
+    elif grade >= 67:
+        print("C")
+    elif grade >= 60:
+        print("D")
+    else:
+        print("F")
+    grades = input(f'Would you like to enter another grade? ("Y/N"):') == "Y"
+
+# 6) Create a list of dictionaries where each dictionary represents a book that you have read.
+# Each dictionary in the list should have the keys title, author, and genre. 
+# Loop through the list and print out information about each book.
+# Prompt the user to enter a genre, then loop through your books list and print out the titles of all the books in that genre.
+
+books = [{"title": "As A Man Thinketh", "author": "James Allen", "genre": "Self Reflect"},
+    {"title": "Rich Dad Poor Dad", "author": "Robert Kiyosaki", "genre": "Financial"},
+    {"title": "The Richest Man in Babylon", "author": "George S. Clason", "genre": "Historical"}]
+
+for book in books:
+    print("title: {}".format(book["title"]))
+
+
+genre = input("Which Genre? ")
+for book in books:
+    if book["genre"] == genre:
+        print(book["title"])
+
