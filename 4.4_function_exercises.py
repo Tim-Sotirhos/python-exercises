@@ -6,6 +6,8 @@
 def is_two(arg):
     if arg == 2 or arg == '2':
         return True
+    else:
+        return False
 
 # or 
     return arg in [2, '2', 'two']
@@ -20,6 +22,8 @@ def is_vowel(arg):
     arg = arg.lower()
     if arg in ["a","e","i","o","u"]:
         return True
+    else:
+        return False
 
 # 3) Define a function named is_consonant.
 # It should return True if the passed string is a consonant, 
@@ -28,6 +32,10 @@ def is_vowel(arg):
 def is_consonant(arg):
     if is_vowel(arg) == False:
         return True
+    else:
+        return False
+
+
 
 # 4) Define a function that accepts a string that is a word.
 # The function should capitalize the first letter of the word if the word starts with a consonant.
@@ -45,29 +53,17 @@ def upper__first__letter(arg):
 # 5) Define a function named calculate_tip.
 # It should accept a tip percentage (a number between 0 and 1) and the bill total, and return the amount to tip.
 
-def calculate_tip(tip, bill):
-    tip = type(float)
-    return (bill * tip)
-
-calculate_tip(.2,100)
-
-# Or
-def calculate__tip(percent_tip, bill_amount):
+def calculate_tip(percent_tip, bill_amount):
     amount_to_tip = percent_tip * bill_amount
     return amount_to_tip
 
-calculate__tip(.2, 100)
+calculate_tip(.2, 100)
 
 # 6) Define a function named apply_discount.
 # It should accept an original price, 
 # and a discount percentage, 
 # and return the price after the discount is applied.
 
-def apply_discount(original_price, discount_percentage):
-    if discount_percentage > 0 and discount_percentage < 1:
-        return original_price * (1 - discount_percentage)
-
-# Or
 def apply__discount(original_price, discount_percentage):    
     discount_amount = original_price * discount_percentage
     return original_price - discount_amount
@@ -78,8 +74,10 @@ apply__discount(100, .3)
 # It should accept a string that is a number that contains commas in it as input, 
 # and return a number as output.
 
-def handle_commas(number):
-    return float(number.replace(",", ""))
+def handle_commas(s):
+    return float(s.replace(',', ''))
+
+print(handle_commas("1,000,990,321"))
 
 # 8) Define a function named get_letter_grade. 
 # It should accept a number and 
@@ -98,19 +96,20 @@ def get_letter_grade(grade):
         return "F"
 
 # Or
+
 grades = {
-    'A': range(94, 101),
-    'B': range(87, 94),
-    'C': range(80, 87),
-    'D': range(70, 80),
-    'F': range(0, 70),
+    'A': range(90, 101),
+    'B': range(80, 90),
+    'C': range(70, 80),
+    'D': range(60, 70),
+    'F': range(0, 60),
 }
 def get_letter_grade(n):
     for grade_letter, grade_range in grades.items():
         if round(n) in grade_range:
             return grade_letter
     return "error: don't know how to get a letter grade for %s" % n
-get_letter_grade(80)
+get_letter_grade(89)
 
 # 9) Define a function named remove_vowels 
 # that accepts a string and 
@@ -130,12 +129,6 @@ def remove_vowels(word):
 # everything should be lowercase
 # spaces should be replaced with underscores
 
-def normalize_name(arg):
-    arg = str(arg).lower().strip().replace(" ", "_")
-    return "".join(e for e in arg if e.isalnum())
-normalize_name("first name")
- 
-# Or
 def remove_special_characters(arg):
     return ''.join([c for c in arg if c.isalpha() or c == ' '])
 def normalize_name(arg):
@@ -143,6 +136,7 @@ def normalize_name(arg):
 normalize_name(" % Completed")
 
 # Or
+
 def remove_special_chars(s):
     return ''.join([c for c in s if c.isidentifier() or c == ' '])
 
