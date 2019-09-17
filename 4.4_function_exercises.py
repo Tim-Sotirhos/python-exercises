@@ -53,8 +53,10 @@ def upper__first__letter(arg):
 # 5) Define a function named calculate_tip.
 # It should accept a tip percentage (a number between 0 and 1) and the bill total, and return the amount to tip.
 
-def calculate_tip(percent_tip, bill_amount):
-    amount_to_tip = percent_tip * bill_amount
+def calculate_tip(percentage, bill):
+    if percentage > 1:
+        percentage /= 100
+    amount_to_tip = percentage * bill
     return amount_to_tip
 
 calculate_tip(.2, 100)
@@ -116,9 +118,10 @@ get_letter_grade(89)
 # returns a string with all the vowels removed.
 
 def remove_vowels(word):
+    word = word.lower()
     no_vowel = ""
-    for x in word.lower():
-        if x in "a,e,i,o,u":
+    for x in word:
+        if x in "aeiou":
             no_vowel = word.replace(x,"")
     return no_vowel
 
