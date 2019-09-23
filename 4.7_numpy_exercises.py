@@ -200,24 +200,40 @@ c = [
     [4, 5, 6],
     [7, 8, 9]
 ]
-
+c = np.array(c)
 # HINT, you'll first need to make sure that the "c" variable is a numpy array prior to using numpy array methods.
 # Exercise 1 - Find the min, max, sum, and product of c.
 
+np.min(c)
+
 # Exercise 2 - Determine the standard deviation of c.
+
+np.std(c)
 
 # Exercise 3 - Determine the variance of c.
 
+np.var(c)
+
 # Exercise 4 - Print out the shape of the array c
+
+c.shape
 
 # Exercise 5 - Transpose c and print out transposed result.
 
+np.transpose(c)
+print(np.transpose(c))
+
 # Exercise 6 - Multiply c by the c-Transposed and print the result.
+
+transpose_c = c * np.transpose(c)
 
 # Exercise 7 - Write the code necessary to sum up the result of c times c transposed. Answer should be 261
 
+np.sum(transpose_c)
+
 # Exercise 8 - Write the code necessary to determine the product of c times c transposed. Answer should be 131681894400.
 
+np.prod(transpose_c)
 
 ## Setup 4
 d = [
@@ -225,23 +241,48 @@ d = [
     [45, -90, -30, 270, 90, 0],
     [60, 45, -45, 90, -45, 180]
 ]
-
+d = np.array(d)
 # Exercise 1 - Find the sine of all the numbers in d
+
+np.sin(d)
 
 # Exercise 2 - Find the cosine of all the numbers in d
 
+np.cos(d)
+
 # Exercise 3 - Find the tangent of all the numbers in d
+
+np.tan(d)
 
 # Exercise 4 - Find all the negative numbers in d
 
+negatives = d[d<0]
+negatives
+
 # Exercise 5 - Find all the positive numbers in d
+
+positives = d[d>0]
+positives
 
 # Exercise 6 - Return an array of only the unique numbers in d.
 
+unique_numbers = np.unique(d)
+
 # Exercise 7 - Determine how many unique numbers there are in d.
+
+len(unique_numbers)
 
 # Exercise 8 - Print out the shape of d.
 
+d.shape
+
 # Exercise 9 - Transpose and then print out the shape of d.
 
+traspose_d = np.transpose(d)
+traspose_d.shape
+
 # Exercise 10 - Reshape d into an array of 9 x 2
+
+d_new_shape = d.reshape(9,2)
+d_new_shape.shape
+d_new_shape
