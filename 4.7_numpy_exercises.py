@@ -205,6 +205,9 @@ c = np.array(c)
 # Exercise 1 - Find the min, max, sum, and product of c.
 
 np.min(c)
+np.max(c)
+np.sum(c)
+np.prod(c)
 
 # Exercise 2 - Determine the standard deviation of c.
 
