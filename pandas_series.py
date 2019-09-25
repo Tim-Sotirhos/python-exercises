@@ -1,6 +1,7 @@
 # Pandas Exercises
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # 1.) Use pandas to create a Series from the following data:
 
@@ -49,7 +50,7 @@ frequencies[frequencies == least_frequent]
 
 # 1.g) Write the code to get the longest string from the fruits series.
 
-fruits.str.len()
+fruits.str.len().idxmax()
 fruits[5]
 
 # REVIEW
@@ -78,30 +79,53 @@ counts_of_a = fruit_names.str.count('a') # not good enough
 list(zip(fruit_names, counts_of_a))
 
 
-
 # 1.k) Output the number of vowels in each and every fruit.
 
-fruits.str.count('a|e|i|o|u')
+sum(fruits.str.count('a|e|i|o|u'))
+
+# REVIEW    
+
+def count_vowels(word):
+    vowels = 'aeiou'
+    count = 0
+    for letter in word.lower():
+        count += letter in vowels
+    return count
+
+sum(fruits.apply(count_vowels))
 
 # 1.l) Use the .apply method and a lambda function to find the fruit(s) containing two or more "o" letters in the name.
 
 has_an_o = (lambda x: x.count("o"))
 fruits.apply(has_an_o)
 
+# REVIEW
+fruits[fruits.apply(lambda x: x.count('o') >= 2)]
+
 # 1.m) Write the code to get only the fruits containing "berry" in the name
 
 fruits.str.count('berry')
+
+# REVIEW
+fruits[fruits.apply(lambda x: 'berry" in x)]
+fruits.str.contains("berry")
+fruits[fruits.str.contains("berry")]
 
 # 1.n) Write the code to get only the fruits containing "apple" in the name
 
 fruits.str.count('apple')
 
+# REVIEW
+fruits[fruits.apply(lambda x: 'apple" in x)]
 
 # 1.o) Which fruit has the highest amount of vowels?
 
-fruits.str.count('a|e|i|o|u')
+print(fruits.str.count('a|e|i|o|u').idxmax())
 fruits[5]
 
+# REVIEW
+
+fruits[fruits.apply(count_vowels.idxmax())]
 
 # 2.) Use pandas to create a Series from the following data:
 
@@ -117,23 +141,28 @@ unsigned = dollars.str.replace("$", "")
 no_commas_unsigned = unsigned.str.replace(",", "")
 no_commas_unsigned
 
-no_commas_unsigned.astype('float')
-no_commas_unsigned
-
-dollars.str.replace("$", "").str.replace(",", "")
+dollars = no_commas_unsigned.astype('float')
 dollars
 
 # 2.c) What is the maximum value? The minimum?
 
+min_value = dollars.min()
+min_value
 
+max_value = dollars.max()
+max_value
 
 # 2.d) Bin the data into 4 equally sized intervals and show how many values fall into each bin.
 
-
+bins = pd.cut(dollars, 4)
+bins
 
 # 2.e) Plot a histogram of the data. Be sure to include a title and axis labels.
 
-
+dollars.plot.hist(color = 'firebrick')
+plt.title('Histogram')
+plt.xlabel('Dollar Values')
+plt.ylabel('Frequency')
 
 # 3) Use pandas to create a Series from the following exam scores:
 
@@ -141,14 +170,106 @@ scores = pd.Series([60, 86, 75, 62, 93, 71, 60, 83, 95, 78, 65, 72, 69, 81, 96, 
 
 # 3. a) What is the minimum exam score? The max, mean, median?
 
+scores.sort_values()
+scores.count()
 
+min_score = scores.min()
+min_score
+
+max_score = scores.max()
+max_score
+
+mean_score = scores.mean()
+mean_score
+
+median_score = scores.median()
+median_score
 
 # 3.b) Plot a histogram of the scores.
 
-
+scores.plot.hist(color = 'firebrick')
 
 # 3.c) Convert each of the numbers above into a letter grade. For example, 86 should be a 'B' and 95 should be an 'A'.
 
+def letter_grades(x):
+    if x >= 90:
+        return "A"
+    elif x >= 80:
+        return "B"
+    elif x >= 70:
+        return "C"
+    elif x >= 60:
+        return "D"
+    else:
+        return "F"
 
+scores.apply(letter_grades)
 
 # 3.d) Write the code necessary to implement a curve. I.e. that grade closest to 100 should be converted to a 100, and that many points should be given to every other score as well.
+
+highest_grade = max_score
+curve = 100 - max_score
+curve_grades = (lambda x: x + curve)
+scores.apply(curve_grades)
+
+# 4.) Use pandas to create a Series from the following string:
+
+# 'hnvidduckkqxwymbimkccexbkmqygkxoyndmcxnwqarhyffsjpsrabtjzsypmzadfavyrnndndvswreauxovncxtwzpwejilzjrmmbbgbyxvjtewqthafnbkqplarokkyydtubbmnexoypulzwfhqvckdpqtpoppzqrmcvhhpwgjwupgzhiofohawytlsiyecuproguy'
+
+string = ("hnvidduckkqxwymbimkccexbkmqygkxoyndmcxnwqarhyffsjpsrabtjzsypmzadfavyrnndndvswreauxovncxtwzpwejilzjrmmbbgbyxvjtewqthafnbkqplarokkyydtubbmnexoypulzwfhqvckdpqtpoppzqrmcvhhpwgjwupgzhiofohawytlsiyecuproguy")
+def split(word):
+    return [c for c in word]
+        
+new_list = split(string)
+type(new_list)
+string_series = pd.Series(new_list)
+type(string_series)
+string_series
+
+# 4.a) What is the most frequently occuring letter? Least frequently occuring?
+
+string_series.value_counts().idxmax()
+
+most_frequent_letter = string_series.value_counts().idxmax()
+print(most_frequent_letter)
+
+least_frequent_letter = string_series.value_counts().idxmin()
+print(least_frequent_letter)
+
+# 4.b) How many vowels are in the list?
+
+def vowel(arg):
+    vowels = 'aeiou'
+    count = 0  
+    for c in arg:
+        count += c in vowels
+    return count
+
+# REVIEW
+
+def count_vowels(word):
+    vowels = 'aeiou'
+    count = 0
+    for letter in word.lower():
+        count += letter in vowels
+    return count
+
+# REVIEW
+sum(string_series.str.count('a|e|i|o|u'))
+
+# REVIEW
+sum(string_series.apply(count_vowels))
+
+# 4.c) How many consonants are in the list?
+
+string_series.count() - sum(string_series.apply(count_vowels))
+
+# 4.c) Create a series that has all of the same letters, but uppercased
+
+string_series.str.upper()
+
+# 4.d) Create a bar plot of the frequencies of the 6 most frequently occuring letters.
+
+string_series.value_counts().head(6).plot.bar(title = "Six Most Popular Letters")
+plt.xlabel("letters")
+plt.ylabel("frequency")
