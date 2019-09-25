@@ -2,6 +2,9 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from pydataset import data
+import numpy as np
+
 
 # 1.) Use pandas to create a Series from the following data:
 
@@ -273,3 +276,55 @@ string_series.str.upper()
 string_series.value_counts().head(6).plot.bar(title = "Six Most Popular Letters")
 plt.xlabel("letters")
 plt.ylabel("frequency")
+
+# Pandas Dataframes Exercies
+
+# 1.) Copy the code from the lesson to create a dataframe full of student grades.
+
+np.random.seed(123)
+
+students = ['Sally', 'Jane', 'Suzie', 'Billy', 'Ada', 'John', 'Thomas',
+            'Marie', 'Albert', 'Richard', 'Isaac', 'Alan']
+
+# randomly generate scores for each student for each subject
+# note that all the values need to have the same length here
+math_grades = np.random.randint(low=60, high=100, size=len(students))
+english_grades = np.random.randint(low=60, high=100, size=len(students))
+reading_grades = np.random.randint(low=60, high=100, size=len(students))
+
+df = pd.DataFrame({'name': students,
+                   'math': math_grades,
+                   'english': english_grades,
+                   'reading': reading_grades})
+
+
+type(df)
+
+# 1.a) Create a column named passing_english that indicates whether each student has a passing grade in reading.
+
+df.english >= 70
+passing_english = df['passing_english'] = df.english > 70
+df
+
+# 1.b) Sort the english grades by the passing_english column. How are duplicates handled?
+
+df.sort_values(by='passing_english')
+# Duplicates are handled by listing them in descending order by name.
+
+# 1.c) Sort the english grades first by passing_english and then by student name. All the students that are failing english should be first,
+# and within the students that are failing english they should be ordered alphabetically. The same should be true for the students passing english. 
+# (Hint: you can pass a list to the .sort_values method)
+
+sort_name_passing_english = df.sort_values(by=['passing_english', 'name'])
+sort_name_passing_english
+
+# 1.d) Sort the english grades first by passing_english, and then by the actual english grade, similar to how we did in the last step.
+
+sort_passing_english_grade = df.sort_values(by=['passing_english', 'english'])
+sort_passing_english_grade
+
+# 1.e) Calculate each students overall grade and add it as a column on the dataframe. The overall grade is the average of the math, english, and reading grades.
+
+overall_grade = df['overall_grade'] = (df.math + df.english + df.reading) / 3
+overall_grade
+df
