@@ -309,6 +309,7 @@ df
 # 1.b) Sort the english grades by the passing_english column. How are duplicates handled?
 
 df.sort_values(by='passing_english')
+
 # Duplicates are handled by listing them in descending order by name.
 
 # 1.c) Sort the english grades first by passing_english and then by student name. All the students that are failing english should be first,
@@ -328,3 +329,119 @@ sort_passing_english_grade
 overall_grade = df['overall_grade'] = (df.math + df.english + df.reading) / 3
 overall_grade
 df
+
+# 2.)Load the mpg dataset. Read the documentation for the dataset and use it for the following questions:
+
+mpg = data('mpg')
+data('mpg', show_doc=True)
+
+# 2.a) How many rows and columns are there?
+
+mpg.shape
+# 234 rows and 11 columns/variables
+
+# 2.b) What are the data types of each column?
+
+mpg.dtypes
+
+# 2.c) Summarize the dataframe with .info and .describe
+
+mpg.info()
+mpg.describe()
+
+# 2.d) Rename the cty column to city.
+
+mpg.rename(columns={'cty': "city"}, inplace=True)
+
+# 2.e) Rename the hwy column to highway.
+
+mpg.rename(columns={'hwy': "highway"}, inplace = True)
+
+#2.f) Do any cars have better city mileage than highway mileage?
+mpg
+def better_city(arg):
+    return mpg.city > mpg.highway
+
+better_city(mpg)
+mpg[better_city(mpg)]
+
+#REVIEW
+better_mileage = mpg['city']> mpg["highway"]
+mpg[better_mileage]
+
+# 2.g) Create a column named mileage_difference this column should contain the difference between highway and city mileage for each car.
+
+mileage_diff = mpg.assign(mileage_difference = mpg.highway - mpg.city)
+mpg
+type(mileage_diff)
+
+#REVIEW
+mpg['mileage_difference'] = mpg.highway-mpg.city
+mpg
+# 2.h) Which car (or cars) has the highest mileage difference?
+
+mileage_diff.sort_values(by = 'mileage_difference', ascending = False).head(2)
+
+#REVIEW
+mpg.sort_values(by = 'mileage_difference',ascending= False).head()
+mpg
+# 2.i) Which compact class car has the lowest highway mileage? The best?
+
+best_compact_highway = mpg.sort_values(["highway", "class"], ascending = [False, True]).head(1)
+best_compact_highway
+
+worst_compact_highway = mpg.sort_values(["highway", "class"]), ascending = [True, True]
+worst_compact_highway
+
+
+#REVIEW
+print(mpg[mpg['class'] == 'compact'].sort_values(by="highway", ascending=True).head(1))
+print(mpg[mpg['class'] == 'compact'].sort_values(by="highway",ascending=True).tail(1))
+
+# 2.j) Create a column named average_mileage that is the mean of the city and highway mileage.
+
+mpg["average_mileage"] = (mpg.city + mpg.highway)/2
+mpg
+
+#REVIEW
+mpg['average_mileage']=mpg[['highway','city']].apply(np.mean,axis=1)
+
+# 2.k) Which dodge car has the best average mileage? The worst?
+
+best_dodge = mpg.sort_values(["manufacturer", "average_mileage"]), ascending = [True, False]
+best_dodge
+
+#REVIEW
+mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage',ascending=False).head(1)
+mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage',ascending=False).tail(1)
+
+
+# 3.)Load the Mammals dataset. Read the documentation for it, and use the data to answer these questions:
+
+mammals=data('Mamals')
+data('Mammals',show_doc = True)
+mammals.head()
+
+# 3.a) How many rows and columns are there?
+mammals.shape
+
+# 3.b) What are the data types?
+mammals.dytpes
+
+# 3.c) Summarize the dataframe with .info and .describe
+mammals.info()
+mammals.describe()
+
+# 3.d) What is the the weight of the fastest animal?
+mammals[['weight','speed']].sort_values(by='speed', ascending = False).head(1)
+
+# 3.e) What is the overal percentage of specials?
+
+sum(mammals.specialse==True)/len(mammals) *100
+(mammals.specials == True).mean()*100
+
+# 3.f) How many animals are hoppers that are above the median speed? What percentage is this?
+
+num_animals = sum((mammals.hoppers == true) & (mammals.speed > mammals.speed.median()))
+print(num_animals)
+print(round(num_animals/len(mammals)*100,2))
