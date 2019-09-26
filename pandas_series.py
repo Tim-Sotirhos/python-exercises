@@ -404,44 +404,44 @@ mpg["average_mileage"] = (mpg.city + mpg.highway)/2
 mpg
 
 #REVIEW
-mpg['average_mileage']=mpg[['highway','city']].apply(np.mean,axis=1)
-
+mpg['average_mileage']= mpg[['highway','city']].apply(np.mean,axis=1)
+mpg
 # 2.k) Which dodge car has the best average mileage? The worst?
 
-best_dodge = mpg.sort_values(["manufacturer", "average_mileage"]), ascending = [True, False]
-best_dodge
-
-#REVIEW
-mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage',ascending=False).head(1)
-mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage',ascending=False).tail(1)
-
+mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage', ascending=False).head(1)
+mpg[mpg['manufacturer'] == 'dodge'].sort_values(by='average_mileage', ascending=False).tail(1)
 
 # 3.)Load the Mammals dataset. Read the documentation for it, and use the data to answer these questions:
 
-mammals=data('Mamals')
+mammals=data('Mammals')
 data('Mammals',show_doc = True)
 mammals.head()
+mammals
 
 # 3.a) How many rows and columns are there?
+
 mammals.shape
 
 # 3.b) What are the data types?
-mammals.dytpes
+
+mammals.dtypes
 
 # 3.c) Summarize the dataframe with .info and .describe
+
 mammals.info()
 mammals.describe()
 
 # 3.d) What is the the weight of the fastest animal?
+
 mammals[['weight','speed']].sort_values(by='speed', ascending = False).head(1)
 
 # 3.e) What is the overal percentage of specials?
 
-sum(mammals.specialse==True)/len(mammals) *100
+sum(mammals.specials == True)/len(mammals) * 100
 (mammals.specials == True).mean()*100
 
 # 3.f) How many animals are hoppers that are above the median speed? What percentage is this?
 
-num_animals = sum((mammals.hoppers == true) & (mammals.speed > mammals.speed.median()))
+num_animals = sum((mammals.hoppers == True) & (mammals.speed > mammals.speed.median()))
 print(num_animals)
 print(round(num_animals/len(mammals)*100,2))
