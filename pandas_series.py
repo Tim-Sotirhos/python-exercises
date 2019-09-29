@@ -25,44 +25,24 @@ fruits.unique()
 unique_fruits = fruits.value_counts()
 unique_fruits
 
-# REVIEW
-frequencies = fruits.value_counts()
-
-
 # 1.e) Determine the most frequently occurring fruit name from the series.
 
-most_frequent = unique_fruits.index[0]
+most_frequent = unique_fruits.idxmax()
 most_frequent
-
-# REVIEW
-most_frequent_fruit = frequencies.max()
-fruit = frequencies.idxmax()
-print("most frequent furit is", fruit, "it has", most_frequent_fruit, 'occurances')
-
 
 # 1.f) Determine the least frequently occurring fruit name from the series.
 
-fruits.min()
-
-# REVIEW
-fruits.value_counts()[fruits.value_counts() == least_frequent]
-
 least_frequent = fruits.value_counts().min()
-frequencies = fruits.value_counts()
-frequencies[frequencies == least_frequent]
+unique_fruits
+unique_fruits[unique_fruits == least_frequent]
 
 # 1.g) Write the code to get the longest string from the fruits series.
 
-fruits.str.len().idxmax()
-fruits[5]
-
-# REVIEW
 fruit_names = fruits.unique()
-fruit_names = pd.Series(fruit_names)
-length_of_string = fruit_names.str.len().max()
-index_of_string = fruit_names.str.len().idxmax()
-longest_string = fruit_names[index_of_string]
-print("the longest string is", longest_string, "and it has", length_of_string, "letters")
+fruit_names_series = pd.Series(fruit_names)
+length_of_string = fruit_names_series.str.len().max()
+index_of_string = fruit_names_series.str.len().idxmax()
+longest_string = fruits[index_of_string]
 
 # 1.h) Find the fruit(s) with 5 or more letters in the name.
 
@@ -75,60 +55,28 @@ fruits.str.capitalize()
 
 # 1.j) Count the letter "a" in all the fruits (use string vectorization)
 
-fruits.str.count('a')
-
-# REVIEW
-counts_of_a = fruit_names.str.count('a') # not good enough
-list(zip(fruit_names, counts_of_a))
-
+count_letter_a = fruits.str.count('a')
+list(zip(fruit_names,count_letter_a))
 
 # 1.k) Output the number of vowels in each and every fruit.
 
 sum(fruits.str.count('a|e|i|o|u'))
 
-# REVIEW    
-
-def count_vowels(word):
-    vowels = 'aeiou'
-    count = 0
-    for letter in word.lower():
-        count += letter in vowels
-    return count
-
-sum(fruits.apply(count_vowels))
-
 # 1.l) Use the .apply method and a lambda function to find the fruit(s) containing two or more "o" letters in the name.
 
-has_an_o = (lambda x: x.count("o"))
-fruits.apply(has_an_o)
-
-# REVIEW
 fruits[fruits.apply(lambda x: x.count('o') >= 2)]
 
 # 1.m) Write the code to get only the fruits containing "berry" in the name
 
-fruits.str.count('berry')
-
-# REVIEW
-fruits[fruits.apply(lambda x: 'berry" in x)]
-fruits.str.contains("berry")
-fruits[fruits.str.contains("berry")]
+fruits[fruits.str.contains('berry')]
 
 # 1.n) Write the code to get only the fruits containing "apple" in the name
 
-fruits.str.count('apple')
-
-# REVIEW
-fruits[fruits.apply(lambda x: 'apple" in x)]
+fruits[fruits.str.contains('apple')]
 
 # 1.o) Which fruit has the highest amount of vowels?
 
-print(fruits.str.count('a|e|i|o|u').idxmax())
-fruits[5]
-
-# REVIEW
-
-fruits[fruits.apply(count_vowels.idxmax())]
+fruits[fruits.str.count('a|e|i|o|u').idxmax()]
 
 # 2.) Use pandas to create a Series from the following data:
 
@@ -140,30 +88,24 @@ type(dollars[0])
 
 # 2.b) Use series operations to convert the series to a numeric data type.
 
-unsigned = dollars.str.replace("$", "")
-no_commas_unsigned = unsigned.str.replace(",", "")
-no_commas_unsigned
+no_special_character = dollars.str.replace("$", "").str.replace(',', "")
 
-dollars = no_commas_unsigned.astype('float')
-dollars
+dollars = no_special_character.astype('float')
 
 # 2.c) What is the maximum value? The minimum?
 
-min_value = dollars.min()
-min_value
-
 max_value = dollars.max()
-max_value
+min_value = dollars.min()
 
 # 2.d) Bin the data into 4 equally sized intervals and show how many values fall into each bin.
 
-bins = pd.cut(dollars, 4)
-bins
+sort_values = dollars.sort_values()
+bins = pd.cut(sort_values, 4)
 
 # 2.e) Plot a histogram of the data. Be sure to include a title and axis labels.
 
 dollars.plot.hist(color = 'firebrick')
-plt.title('Histogram')
+plt.title('Histogram of Values')
 plt.xlabel('Dollar Values')
 plt.ylabel('Frequency')
 
@@ -173,40 +115,26 @@ scores = pd.Series([60, 86, 75, 62, 93, 71, 60, 83, 95, 78, 65, 72, 69, 81, 96, 
 
 # 3. a) What is the minimum exam score? The max, mean, median?
 
-scores.sort_values()
-scores.count()
+scores.describe()
 
 min_score = scores.min()
-min_score
 
 max_score = scores.max()
-max_score
 
 mean_score = scores.mean()
-mean_score
 
 median_score = scores.median()
-median_score
 
 # 3.b) Plot a histogram of the scores.
 
 scores.plot.hist(color = 'firebrick')
+plt.title('Histogram of Scores')
+plt.xlabel('Scores')
+plt.ylabel('Frequency')
 
 # 3.c) Convert each of the numbers above into a letter grade. For example, 86 should be a 'B' and 95 should be an 'A'.
 
-def letter_grades(x):
-    if x >= 90:
-        return "A"
-    elif x >= 80:
-        return "B"
-    elif x >= 70:
-        return "C"
-    elif x >= 60:
-        return "D"
-    else:
-        return "F"
-
-scores.apply(letter_grades)
+scores.apply(lambda x: 'A' if x > 89 else ('B' if x > 79 else ('C' if x > 69 else ('D' if x > 59 else 'F'))))
 
 # 3.d) Write the code necessary to implement a curve. I.e. that grade closest to 100 should be converted to a 100, and that many points should be given to every other score as well.
 
