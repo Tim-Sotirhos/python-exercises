@@ -138,62 +138,31 @@ scores.apply(lambda x: 'A' if x > 89 else ('B' if x > 79 else ('C' if x > 69 els
 
 # 3.d) Write the code necessary to implement a curve. I.e. that grade closest to 100 should be converted to a 100, and that many points should be given to every other score as well.
 
-highest_grade = max_score
-curve = 100 - max_score
-curve_grades = (lambda x: x + curve)
-scores.apply(curve_grades)
+top_grade = scores[scores.idxmax()]
+curve_amount = 100 - max_grade
+curved_grades = scores + 4
 
 # 4.) Use pandas to create a Series from the following string:
 
 # 'hnvidduckkqxwymbimkccexbkmqygkxoyndmcxnwqarhyffsjpsrabtjzsypmzadfavyrnndndvswreauxovncxtwzpwejilzjrmmbbgbyxvjtewqthafnbkqplarokkyydtubbmnexoypulzwfhqvckdpqtpoppzqrmcvhhpwgjwupgzhiofohawytlsiyecuproguy'
 
 string = ("hnvidduckkqxwymbimkccexbkmqygkxoyndmcxnwqarhyffsjpsrabtjzsypmzadfavyrnndndvswreauxovncxtwzpwejilzjrmmbbgbyxvjtewqthafnbkqplarokkyydtubbmnexoypulzwfhqvckdpqtpoppzqrmcvhhpwgjwupgzhiofohawytlsiyecuproguy")
-def split(word):
-    return [c for c in word]
-        
-new_list = split(string)
-type(new_list)
-string_series = pd.Series(new_list)
-type(string_series)
-string_series
+
+string_series = pd.Series(list('hnvidduckkqxwymbimkccexbkmqygkxoyndmcxnwqarhyffsjpsrabtjzsypmzadfavyrnndndvswreauxovncxtwzpwejilzjrmmbbgbyxvjtewqthafnbkqplarokkyydtubbmnexoypulzwfhqvckdpqtpoppzqrmcvhhpwgjwupgzhiofohawytlsiyecuproguy'))
 
 # 4.a) What is the most frequently occuring letter? Least frequently occuring?
 
-string_series.value_counts().idxmax()
-
 most_frequent_letter = string_series.value_counts().idxmax()
-print(most_frequent_letter)
 
 least_frequent_letter = string_series.value_counts().idxmin()
-print(least_frequent_letter)
 
 # 4.b) How many vowels are in the list?
 
-def vowel(arg):
-    vowels = 'aeiou'
-    count = 0  
-    for c in arg:
-        count += c in vowels
-    return count
-
-# REVIEW
-
-def count_vowels(word):
-    vowels = 'aeiou'
-    count = 0
-    for letter in word.lower():
-        count += letter in vowels
-    return count
-
-# REVIEW
-sum(string_series.str.count('a|e|i|o|u'))
-
-# REVIEW
-sum(string_series.apply(count_vowels))
+number_of_vowels = sum(string_series.str.count('a|e|i|o|u'))
 
 # 4.c) How many consonants are in the list?
 
-string_series.count() - sum(string_series.apply(count_vowels))
+number_of_consonants = len(string_series) - number_of_vowels
 
 # 4.c) Create a series that has all of the same letters, but uppercased
 
