@@ -17,20 +17,19 @@ mpg.groupby('manufacturer').average_mpg.agg('mean').sort_values(ascending = Fals
 # 1.b) How many different manufacturers are there?
 
 len(mpg[['manufacturer']].groupby('manufacturer').agg('count'))
+len(mpg.manufacturer.unique())
 
 # 1.c) How many different models are there?
 
 len(mpg[['model']].groupby('model').agg('count'))
+len(mpg.model.unique())
 
 # 1.d) Do automatic or manual cars have better miles per gallon?
 
-auto_trans = mpg[mpg['trans'].str.contains('auto')].groupby(['trans']).mean()
-auto_mpg = auto_trans.average_mpg.mean()
-auto_mpg
-
-manual_trans = mpg[mpg['trans'].str.contains('manual')].groupby(['trans']).mean()
-manual_mpg = manual_trans.average_mpg.mean()
-manual_mpg
+automatic = mpg[mpg.trans.str.contains('auto')]
+manual = mpg[mpg.trans.str.contains('manual')]
+auto_avg_mpg = automatic.mean()
+manual_avg_mpg = manual.mean()
 
 # 2.) Joining and Merging
 
@@ -39,7 +38,11 @@ Copy the users and roles dataframes from the examples above.
 What do you think a right join would look like? An outer join? 
 What happens if you drop the foreign keys from the dataframes and try to merge them?
 '''
-# Users Dataframe
+
+# Copy the users and roles dataframes. 
+# What do you think a right join would look like? 
+# An outer join? What happens if you drop the foreign keys from the dataframes and try to merge them?
+
 users = pd.DataFrame({
     'id': [1, 2, 3, 4, 5, 6],
     'name': ['bob', 'joe', 'sally', 'adam', 'jane', 'mike'],
@@ -47,7 +50,7 @@ users = pd.DataFrame({
 })
 users
 
-# Roles Dataframe
+# Copy Roles Dataframe
 roles = pd.DataFrame({
     'id': [1, 2, 3, 4],
     'name': ['admin', 'author', 'reviewer', 'commenter']
@@ -84,14 +87,14 @@ pd.merge(
 
 # 3.) Getting data from SQL databases
 
-# 3.a ) Create a function named get_db_url. It should accept a username, hostname, password, and database name and return a url formatted like in the examples in this lesson.
+# 3.a ) Create a function named get_db_url. 
+# It should accept a username, hostname, password, and database name and return a url formatted like in the examples in this lesson.
 
 import pandas as pd
 
 def get_db_url(user, password, host, database_name):
     url = f'mysql+pymysql://{user}:{password}@{host}/{database_name}'
     return url
-
 
 from env import host, user, password
 
@@ -108,11 +111,15 @@ employees_df.head(25)
 
 # 3.d) Intentionally make a typo in the database url. What kind of error message do you see?
 
-# OperationalError:
+'''
+OperationalError:
+'''
 
 # 3.e) Intentionally make an error in your SQL query. What does the error message look like?
 
-# ProgrammingError:
+'''
+ProgrammingError:
+'''
 
 # 3.f) Read the employees and titles tables into two separate dataframes
 
@@ -125,18 +132,39 @@ titles_df.head(25)
 # 3.g) Visualize the number of employees with each title.
 current_titles = pd.read_sql('SELECT title, count(title) FROM titles WHERE to_date = "9999-01-01" group by title', url)
 
-left_join.groupby(['title']).emp_no.agg('count')
+current_titles = titles_df.groupby("title").count()
+current_titles = current_titles.reset_index()
+current_titles.plot(x ='title', y='emp_no', kind = 'bar')
 
 # 3.h) Join the employees and titles dataframes together.
 
-left_join = pd.merge(employees_df, titles_df, left_on="emp_no", right_on="emp_no",how='left')
-left_join.head(5)
+employees_titles = pd.merge(employees_df, titles_df, left_on="emp_no", right_on="emp_no",how='left')
+employees_titles.head()
 
 # 3.i) Visualize how frequently employees change titles.
 
-left_join[['first_name', 'last_name', 'title']]
+# Groupby emp_no and count number of titles
+new_df = employees_titles.groupby('emp_no').count()
+new_df.head()
+
+# Reset datafram index
+new_df = new_df.reset_index()
+new_df.head()
+
+# Multi column dataframe
+new_df = new_df[["title", "emp_no"]]
+new_df.head()
+
+# Count number of times titles have changed
+titles_count = new_df.groupby('title').count()
+titles_count = titles_count.reset_index()
+
+# Visualization
+new_df.plot(x = 'title', y = 'emp_no', kind = 'bar')
 
 # 3.j) For each title, find the hire date of the employee that was hired most recently with that title.
+
+
 
 left_join.groupby('title').from_date.agg('max')
 
@@ -151,7 +179,6 @@ import pandas as pd
 def get_db_url(user, password, host, database_name):
     url = f'mysql+pymysql://{user}:{password}@{host}/{database_name}'
     return url
-
 
 from env import host, user, password
 
