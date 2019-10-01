@@ -164,13 +164,15 @@ new_df.plot(x = 'title', y = 'emp_no', kind = 'bar')
 
 # 3.j) For each title, find the hire date of the employee that was hired most recently with that title.
 
-
-
-left_join.groupby('title').from_date.agg('max')
+employees_titles.groupby('title').hire_date.max()
 
 # 3.k) Write the code necessary to create a cross tabulation of the number of titles by department. (Hint: this will involve a combination of SQL and python/pandas code)
 
+department_titiles = pd.read_sql('SELECT * FROM departments JOIN dept_emp using(dept_no) JOIN titles using(emp_no) WHERE titles.to_date > now() and dept_emp.to_date > now()',url)
+department_titiles.head()
 
+# Crosstab of titles per department
+number_of_titles = pd.crosstab(department_titiles.title, department_titiles.dept_name)
 
 # 4.) Use your get_db_url function to help you explore the data from the chipotle database. Use the data to answer the following questions:
 
