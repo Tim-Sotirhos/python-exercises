@@ -1,7 +1,7 @@
 # Seaborn Exercises
 
 import numpy as np
-import pandas as import pd
+import pandas as pd
 import matplotlib as plt
 import seaborn as sns
 from pydataset import data
@@ -21,10 +21,12 @@ sns.distplot(iris.Petal_Length)
 
 sns.heatmap(iris.corr(), annot = True, cmap = 'OrRd')
 
+sns.relplot(data = iris, x = "Petal_Length", y = "Petal_Width")
+
 # D) Would it be reasonable to predict species based on sepal width and sepal length?
 
 iris.head()
-sns.relplot(data = iris, x = "Sepal_Length", y = "Sepal_Width", hue = "Species")
+sns.relplot(data = iris, x = "Sepal_Width", y = "Sepal_Length", hue = "Species")
 plt.title('Species by Septal')
 plt.xlabel('Sepal Length')
 plt.ylabel('Sepal Width')
@@ -36,6 +38,8 @@ plt.title('Species by Petal')
 plt.xlabel('Petal Length')
 plt.ylabel('Petal Width')
 
+sns.pairplot(data = iris, hue = 'Species')
+
 # 1.) Use seaborn's load_dataset function to load the anscombe data set. 
 # Use pandas to group the data by the dataset column, 
 # and calculate summary statistics for each dataset. What do you notice?
@@ -46,6 +50,8 @@ dataset['dataset'].value_counts()
 
 dataset.groupby(['dataset']).agg(['mean', 'max', 'min'])
 dataset.groupby(['dataset']).describe()
+
+sns.relplot(data = anscombe, x = 'x', y = 'y')
 
 '''
 I notice more variation with the "y" variable.
@@ -78,6 +84,8 @@ swiss['is_catholic'] = swiss.Catholic > 37
 swiss.index
 
 corr = swiss.corr()
+
+sns.boxplot(data = swiss, y = 'Fertility', x = 'is_catholic')
 
 # 3.b) Does whether or not a province is Catholic influence fertility?
 
@@ -127,6 +135,31 @@ bar_graph['top_revenue'] = top_four_revenue.values
 print(bar_graph)
 
 sns.barplot(x="top_items", y="top_revenue", data=bar_graph)
+
+# Submitted after review on 10/02/19 "better way to solve chipotle"
+orders.item_price = orders.item_price.str.replace('$', '').astype('float')
+
+four_most_popular = (orders.groupby('item_name')
+ .sum()
+ .drop(columns='order_id')
+ .rename(columns={'quantity': 'units_sold', 'item_price': 'revenue'})
+ .sort_values(by='units_sold', ascending=False)
+ .head(4)
+ .reset_index()
+)
+
+# storing the results of each step in a separate variable
+
+item_sums = orders.groupby('item_name').sum()
+item_sums.drop(columns='order_id', inplace=True)
+item_sums.rename(columns={'quantity': 'units_sold', 'item_price': 'revenue'}, inplace=True)
+sorted_item_sums = item_sums.sort_values(by='units_sold', ascending=False)
+top_four_items = sorted_item_sums.head(4)
+
+
+sns.barplot(data=four_most_popular, y='item_name', x='revenue')
+plt.ylabel('')
+plt.xticks()
 
 # 5.) Load the sleepstudy data and read it's documentation. 
 # Use seaborn to create a line chart of all the individual subject's reaction times and a more prominant line showing the average change in reaction time.
