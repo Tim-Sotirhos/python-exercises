@@ -202,3 +202,28 @@ chipotle_df.groupby('item_name')["price"].count().sort_values().tail(3)
 # 4.c) Which item has produced the most revenue?
 
 chipotle_df.groupby('item_name')['price'].sum().idxmax()
+
+# Submitted after due date on 10/02/19 from review of Seaborn review "better way to solve chipotle"
+orders.item_price = orders.item_price.str.replace('$', '').astype('float')
+
+four_most_popular = (orders.groupby('item_name')
+ .sum()
+ .drop(columns='order_id')
+ .rename(columns={'quantity': 'units_sold', 'item_price': 'revenue'})
+ .sort_values(by='units_sold', ascending=False)
+ .head(4)
+ .reset_index()
+)
+
+# storing the results of each step in a separate variable
+
+item_sums = orders.groupby('item_name').sum()
+item_sums.drop(columns='order_id', inplace=True)
+item_sums.rename(columns={'quantity': 'units_sold', 'item_price': 'revenue'}, inplace=True)
+sorted_item_sums = item_sums.sort_values(by='units_sold', ascending=False)
+top_four_items = sorted_item_sums.head(4)
+
+
+sns.barplot(data=four_most_popular, y='item_name', x='revenue')
+plt.ylabel('')
+plt.xticks()
